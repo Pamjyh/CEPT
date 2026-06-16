@@ -614,12 +614,19 @@ function speak(text) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.lang  = 'th-TH';
   u.rate  = 0.75;
   u.pitch = 1.05;
+  // ใช้ lang ของ voice ที่เลือก — สำคัญสำหรับ Siri voices บน iOS
   if (selectedVoiceId) {
     const v = window.speechSynthesis.getVoices().find(x => x.name === selectedVoiceId);
-    if (v) u.voice = v;
+    if (v) {
+      u.voice = v;
+      u.lang  = v.lang;
+    } else {
+      u.lang = 'th-TH';
+    }
+  } else {
+    u.lang = 'th-TH';
   }
   window.speechSynthesis.speak(u);
 }
@@ -679,6 +686,7 @@ function loadVoices() {
     html += '</optgroup>';
   }
   sel.innerHTML = html;
+  if (selectedVoiceId) sel.value = selectedVoiceId;  // ensure dropdown reflects selection
 
   updateBadge(selectedVoiceId);
   document.getElementById('voice-bar').style.display = 'flex';
@@ -711,6 +719,9 @@ function switchTab(tab) {
     document.getElementById('grid-view').style.display     = 'none';
     document.getElementById('practice-view').style.display = 'block';
     updateCard();
+    // พูดการ์ดแรกตรงๆ ใน click handler (iOS-safe)
+    const firstItem = getPracticeItems()[practiceIndex];
+    if (firstItem) speak(getSpeakText(firstItem));
   } else {
     document.getElementById('grid-view').style.display     = 'block';
     document.getElementById('practice-view').style.display = 'none';
@@ -808,8 +819,8 @@ function updateCard() {
   document.getElementById('next-btn').textContent =
     isLast ? '🏆 เสร็จแล้ว!' : 'อ่านได้แล้ว →';
 
-  clearTimeout(cardTimer);
-  cardTimer = setTimeout(() => speak(getSpeakText(item)), 400);
+  // iOS: ไม่ auto-speak ใน setTimeout (iOS ต้องการ user gesture โดยตรง)
+  // speak() จะถูกเรียกจาก nextCard() และ switchTab() แทน
 }
 
 function replayAudio() {
@@ -823,7 +834,7 @@ function nextCard() {
 
   if (practiceIndex + 1 >= items.length) {
     isCompleted = true;
-    window.speechSynthesis && window.speechSynthesis.cancel();
+    speak('เก่งมาก! หนูอ่านครบทุกตัวแล้ว');  // synchronous — iOS requires this
 
     document.getElementById('progress-text').textContent = `${items.length} / ${items.length}`;
     document.getElementById('progress-pct').textContent  = '100%';
@@ -833,15 +844,16 @@ function nextCard() {
     document.getElementById('flashcard').style.display          = 'none';
     document.getElementById('practice-btns').style.display      = 'none';
     document.getElementById('completion-screen').style.display  = 'block';
-
-    setTimeout(() => speak('เก่งมาก! หนูอ่านครบทุกตัวแล้ว'), 400);
     return;
   }
+
+  // พูดก่อน animate — iOS ต้องเรียก speak() ตรงๆ ใน click handler
+  practiceIndex++;
+  speak(getSpeakText(items[practiceIndex]));
 
   const fc = document.getElementById('flashcard');
   fc.classList.add('fade-out');
   setTimeout(() => {
-    practiceIndex++;
     updateCard();
     fc.classList.remove('fade-out');
   }, 150);
