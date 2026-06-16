@@ -123,6 +123,21 @@
       gap: 10px;
       font-size: 13px;
     }
+    .voice-reload {
+      background: none;
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-full);
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #666;
+    }
+    .voice-reload:hover { background: var(--surface-soft); }
     .voice-bar label {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
@@ -414,6 +429,7 @@
 <div class="voice-bar" id="voice-bar">
   <label>เสียง</label>
   <select id="voice-select" onchange="changeVoice(this.value)"></select>
+  <button class="voice-reload" onclick="reloadVoices()" title="โหลดเสียงใหม่">↺</button>
   <span class="voice-badge" id="voice-badge" style="display:none"></span>
 </div>
 
@@ -614,53 +630,68 @@ function updateBadge(id) {
   const b = document.getElementById('voice-badge');
   if (!id) { b.style.display = 'none'; return; }
   const isNeural = NEURAL_KW.some(k => id.toLowerCase().includes(k));
-  if (isNeural) {
-    b.textContent = 'Enhanced';
-    b.style.display = 'inline';
-  } else {
-    b.style.display = 'none';
-  }
+  b.textContent = isNeural ? '✨ Enhanced' : '';
+  b.style.display = isNeural ? 'inline' : 'none';
 }
 
 function loadVoices() {
   if (!window.speechSynthesis) return;
+  const all = window.speechSynthesis.getVoices();
+  if (all.length === 0) return;
 
+  // Deduplicate by name, Thai first then others
   const seen = new Set();
-  const thaiVoices = window.speechSynthesis.getVoices()
-    .filter(v => v.lang.startsWith('th'))
-    .filter(v => {
-      if (seen.has(v.name)) return false;
-      seen.add(v.name);
-      return true;
-    });
+  const thaiVoices  = [];
+  const otherVoices = [];
+  all.forEach(v => {
+    if (seen.has(v.name)) return;
+    seen.add(v.name);
+    if (v.lang.startsWith('th')) thaiVoices.push(v);
+    else otherVoices.push(v);
+  });
 
-  if (thaiVoices.length === 0) return;
-
-  // Show Kanya Enhanced notice only if no enhanced voice found
-  const hasEnhanced = thaiVoices.some(v =>
-    NEURAL_KW.some(k => v.name.toLowerCase().includes(k))
-  );
-  document.getElementById('tts-notice').style.display = hasEnhanced ? 'none' : 'block';
-
-  // Auto-select: prefer enhanced/neural, else first
+  // Auto-select on first load: prefer enhanced Thai, else first Thai, else first available
   if (!selectedVoiceId) {
-    const best = thaiVoices.find(v =>
-      NEURAL_KW.some(k => v.name.toLowerCase().includes(k))
-    );
-    selectedVoiceId = (best || thaiVoices[0]).name;
+    const best = thaiVoices.find(v => NEURAL_KW.some(k => v.name.toLowerCase().includes(k)))
+              || thaiVoices[0]
+              || all[0];
+    if (best) selectedVoiceId = best.name;
   }
 
-  const sel = document.getElementById('voice-select');
+  const sel  = document.getElementById('voice-select');
   const keep = sel.value || selectedVoiceId;
-  sel.innerHTML = thaiVoices
-    .map(v => {
+
+  // Build grouped dropdown
+  let html = '';
+  if (thaiVoices.length > 0) {
+    html += '<optgroup label="— ภาษาไทย —">';
+    thaiVoices.forEach(v => {
       const tag = NEURAL_KW.some(k => v.name.toLowerCase().includes(k)) ? ' ✨' : '';
-      return `<option value="${v.name}"${v.name === keep ? ' selected' : ''}>${v.name}${tag}</option>`;
-    })
-    .join('');
+      html += `<option value="${v.name}"${v.name === keep ? ' selected' : ''}>${v.name}${tag}</option>`;
+    });
+    html += '</optgroup>';
+  }
+  if (otherVoices.length > 0) {
+    html += '<optgroup label="— เสียงอื่นๆ ในระบบ —">';
+    otherVoices.forEach(v => {
+      html += `<option value="${v.name}"${v.name === keep ? ' selected' : ''}>${v.name} (${v.lang})</option>`;
+    });
+    html += '</optgroup>';
+  }
+  sel.innerHTML = html;
 
   updateBadge(selectedVoiceId);
   document.getElementById('voice-bar').style.display = 'flex';
+
+  // Notice: แนะนำ Kanya Enhanced ถ้ายังไม่มี
+  const hasEnhanced = thaiVoices.some(v => NEURAL_KW.some(k => v.name.toLowerCase().includes(k)));
+  document.getElementById('tts-notice').style.display = hasEnhanced ? 'none' : 'block';
+}
+
+function reloadVoices() {
+  // Force re-read — useful ถ้า Safari ยังไม่ได้โหลด voices
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  loadVoices();
 }
 
 function changeVoice(id) {
@@ -858,6 +889,12 @@ if (window.speechSynthesis) {
       [200, 600, 1500].forEach(scheduleRetry);
     });
   }
+
+  // Safari: voices มักจะโหลดหลัง user gesture แรก
+  document.addEventListener('click', function onFirstClick() {
+    loadVoices();
+    document.removeEventListener('click', onFirstClick);
+  }, { once: true });
 }
 </script>
 </body>
