@@ -3,291 +3,381 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📚 อ่านภาษาไทย</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700;800&display=swap" rel="stylesheet">
+  <title>อ่านภาษาไทย</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+Thai:wght@300;400;500;700&display=swap" rel="stylesheet">
   <script src="https://code.responsivevoice.org/responsivevoice.js?key=FREE"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ===== PlayStation Design System ===== */
+    :root {
+      --primary:          #0070d1;
+      --primary-pressed:  #0064b7;
+      --primary-active:   #004d8d;
+      --commerce:         #d53b00;
+      --on-primary:       #ffffff;
+      --on-dark:          #ffffff;
+      --body-dark:        rgba(255,255,255,0.7);
+      --mute-dark:        rgba(229,229,229,0.55);
+      --ash-dark:         rgba(229,229,229,0.2);
+      --canvas-dark:      #000000;
+      --elevated:         #121314;
+      --card:             #181818;
+      --hairline:         rgba(229,229,229,0.2);
+      --warning:          #c81b3a;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
 
     body {
-      font-family: 'Sarabun', 'Noto Sans Thai', 'TH Sarabun New', system-ui, sans-serif;
-      background: linear-gradient(180deg, #EFF6FF 0%, #F5F3FF 100%);
+      font-family: 'Noto Sans Thai', 'Roboto', system-ui, sans-serif;
+      background: var(--canvas-dark);
+      color: var(--on-dark);
       min-height: 100vh;
     }
 
-    /* ===== HEADER ===== */
+    /* ===== HEADER (hero-band-dark) ===== */
     .header {
-      background: linear-gradient(135deg, #3B82F6 0%, #7C3AED 100%);
-      color: white;
-      padding: 1rem 1.25rem;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+      background: var(--canvas-dark);
+      border-bottom: 1px solid var(--hairline);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .header h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: 0.02em; }
-    .header p  { font-size: 0.8rem; opacity: 0.7; margin-top: 0.2rem; }
+    .header-logo {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .header-text h1 {
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.1px;
+      color: var(--on-dark);
+      line-height: 1.25;
+    }
+    .header-text p {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--mute-dark);
+      margin-top: 2px;
+    }
 
-    /* ===== TABS ===== */
+    /* ===== TABS (filter-pill row) ===== */
     .tabs {
       display: flex;
-      gap: 0.5rem;
-      padding: 0.75rem;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--elevated);
+      border-bottom: 1px solid var(--hairline);
       position: sticky;
       top: 0;
       z-index: 200;
     }
     .tab-btn {
       flex: 1;
-      padding: 0.5rem 0.25rem;
-      border: none;
-      border-radius: 12px;
+      padding: 8px 12px;
+      border: 1px solid var(--hairline);
+      border-radius: 9999px;
       cursor: pointer;
       font-family: inherit;
-      font-size: 0.85rem;
+      font-size: 13px;
       font-weight: 700;
-      transition: all 0.2s;
-      line-height: 1.4;
+      letter-spacing: 0.324px;
+      line-height: 1.25;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      background: transparent;
+      color: var(--mute-dark);
     }
-    .tab-icon { display: block; font-size: 1.4rem; line-height: 1.2; }
-    .tab-btn.active { background: #3B82F6; color: white; box-shadow: 0 2px 8px rgba(59,130,246,0.4); }
-    .tab-btn:not(.active) { background: #F3F4F6; color: #6B7280; }
-    .tab-btn:not(.active):hover { background: #E5E7EB; }
+    .tab-icon { display: block; font-size: 1.25rem; line-height: 1.2; margin-bottom: 2px; }
+    .tab-btn.active {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+    .tab-btn:not(.active):hover {
+      background: rgba(255,255,255,0.06);
+      color: var(--on-dark);
+    }
 
     /* ===== CONTENT ===== */
-    .content { padding: 1rem; max-width: 720px; margin: 0 auto; }
-    .hint { text-align: center; color: #9CA3AF; font-size: 0.875rem; margin-bottom: 1rem; }
+    .content { padding: 16px; max-width: 720px; margin: 0 auto; }
+    .hint {
+      text-align: center;
+      color: var(--mute-dark);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
 
     /* ===== CHARACTER GRID ===== */
     .char-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
-      gap: 0.5rem;
+      gap: 8px;
     }
     .char-card {
-      border: 2.5px solid;
-      border-radius: 14px;
-      padding: 0.5rem 0.25rem;
+      background: var(--card);
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      padding: 12px 4px 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
       min-height: 82px;
-      background: white;
     }
-    .char-card:hover  { transform: scale(1.1); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
-    .char-card:active { transform: scale(0.95); }
-    .char-card .ch    { font-size: 2.1rem; font-weight: 800; line-height: 1.2; }
-    .char-card .em    { font-size: 1rem; margin-top: 2px; }
+    .char-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+    .char-card:active { opacity: 0.8; }
+    .char-card .ch { font-size: 2.1rem; font-weight: 700; line-height: 1.2; }
+    .char-card .em { font-size: 0.95rem; margin-top: 3px; }
 
     /* ===== MODAL ===== */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.8);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 1000;
-      padding: 1rem;
-      backdrop-filter: blur(2px);
+      padding: 16px;
+      backdrop-filter: blur(6px);
     }
     .modal-overlay.hidden { display: none; }
     .modal {
-      background: white;
-      border-radius: 28px;
+      background: var(--elevated);
+      border: 1px solid var(--hairline);
+      border-radius: 16px;
       max-width: 340px;
       width: 100%;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-      animation: pop-in 0.2s ease;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      animation: pop-in 0.18s ease;
     }
     @keyframes pop-in {
-      from { transform: scale(0.85); opacity: 0; }
+      from { transform: scale(0.88); opacity: 0; }
       to   { transform: scale(1);    opacity: 1; }
     }
     .modal-top {
-      padding: 2.5rem 1.5rem 2rem;
+      background: var(--card);
+      padding: 40px 24px 32px;
       text-align: center;
-      border-bottom: 3px solid;
+      border-bottom: 1px solid var(--hairline);
     }
-    .modal-top .big-char { font-size: 6.5rem; font-weight: 800; line-height: 1; }
-    .modal-body { padding: 1.5rem 1.5rem 1.75rem; text-align: center; }
-    .modal-emoji   { font-size: 3.2rem; margin-bottom: 0.6rem; }
-    .modal-name    { font-size: 1.6rem; font-weight: 700; color: #1F2937; margin-bottom: 0.4rem; }
-    .modal-example { font-size: 1rem; color: #6B7280; margin-bottom: 1.5rem; }
-    .modal-example .ex-word { font-weight: 700; color: #374151; font-size: 1.1rem; }
-    .modal-btns { display: flex; gap: 0.75rem; }
+    .modal-top .big-char { font-size: 6.5rem; font-weight: 700; line-height: 1; }
+    .modal-body { padding: 24px 24px 28px; text-align: center; }
+    .modal-emoji   { font-size: 3rem; margin-bottom: 10px; }
+    .modal-name    { font-size: 22px; font-weight: 300; color: var(--on-dark); letter-spacing: 0.1px; margin-bottom: 6px; }
+    .modal-example { font-size: 14px; color: var(--mute-dark); margin-bottom: 24px; }
+    .modal-example .ex-word { font-weight: 700; color: var(--on-dark); font-size: 15px; }
+    .modal-btns { display: flex; gap: 10px; }
 
-    /* ===== BUTTONS ===== */
+    /* ===== BUTTONS (pill — button-primary & button-secondary-dark) ===== */
     .btn {
       flex: 1;
-      padding: 0.8rem 1rem;
+      padding: 0 28px;
+      height: 48px;
       border: none;
-      border-radius: 16px;
+      border-radius: 9999px;
       font-family: inherit;
-      font-size: 1rem;
+      font-size: 15px;
       font-weight: 700;
+      letter-spacing: 0.45px;
       cursor: pointer;
-      transition: transform 0.1s, filter 0.1s;
+      transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
-    .btn:hover  { filter: brightness(1.06); }
-    .btn:active { transform: scale(0.97); }
-    .btn-blue  { background: #3B82F6; color: white; }
-    .btn-green { background: #10B981; color: white; }
-    .btn-gray  { background: #F3F4F6; color: #374151; }
+    .btn:active { opacity: 0.85; }
+    .btn-blue {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    .btn-blue:hover { background: var(--primary-pressed); }
+    .btn-green {
+      background: #1a9e6e;
+      color: #ffffff;
+    }
+    .btn-green:hover { background: #15835b; }
+    .btn-gray {
+      background: transparent;
+      color: var(--on-dark);
+      border: 1px solid var(--hairline);
+    }
+    .btn-gray:hover { background: rgba(255,255,255,0.06); }
     .btn-full  { width: 100%; flex: none; }
-    .btn-lg    { padding: 1rem 1.25rem; font-size: 1.1rem; }
+    .btn-lg    { height: 52px; font-size: 16px; }
 
     /* ===== PRACTICE MODE ===== */
     .practice-container { max-width: 400px; margin: 0 auto; }
 
-    .set-selector { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    .set-selector { display: flex; gap: 8px; margin-bottom: 16px; }
     .set-btn {
       flex: 1;
-      padding: 0.65rem;
-      border: none;
-      border-radius: 12px;
+      padding: 8px 12px;
+      border: 1px solid var(--hairline);
+      border-radius: 9999px;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 13px;
       font-weight: 700;
+      letter-spacing: 0.324px;
       cursor: pointer;
-      transition: all 0.2s;
-      background: #F3F4F6;
-      color: #6B7280;
+      transition: all 0.15s;
+      background: transparent;
+      color: var(--mute-dark);
     }
-    .set-btn.s-cons { background: #3B82F6; color: white; box-shadow: 0 2px 6px rgba(59,130,246,0.4); }
-    .set-btn.s-vow  { background: #7C3AED; color: white; box-shadow: 0 2px 6px rgba(124,58,237,0.4); }
+    .set-btn.s-cons, .set-btn.s-vow {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
 
-    /* Progress */
+    /* Progress bar */
     .progress-info {
       display: flex;
       justify-content: space-between;
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: #6B7280;
-      margin-bottom: 0.4rem;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--mute-dark);
+      margin-bottom: 6px;
     }
     .progress-bar-bg {
       width: 100%;
-      height: 12px;
-      background: #E5E7EB;
-      border-radius: 99px;
+      height: 4px;
+      background: var(--card);
+      border-radius: 9999px;
       overflow: hidden;
-      margin-bottom: 1.5rem;
+      margin-bottom: 24px;
     }
     .progress-bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, #60A5FA, #A78BFA);
-      border-radius: 99px;
-      transition: width 0.5s ease;
+      background: var(--primary);
+      border-radius: 9999px;
+      transition: width 0.45s ease;
     }
 
     /* Flashcard */
     .flashcard {
-      border: 3px solid;
-      border-radius: 28px;
-      padding: 2rem 1.5rem;
+      background: var(--card);
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      padding: 32px 24px 28px;
       text-align: center;
-      margin-bottom: 1.25rem;
-      background: white;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
       transition: opacity 0.15s, transform 0.15s;
     }
-    .flashcard.fade-out { opacity: 0; transform: translateY(10px); }
-    .flashcard .big-char  { font-size: 8rem; font-weight: 800; line-height: 1; margin-bottom: 0.8rem; }
-    .flashcard .card-emoji{ font-size: 3.5rem; margin-bottom: 0.7rem; }
-    .flashcard .card-name { font-size: 1.5rem; font-weight: 700; color: #1F2937; margin-bottom: 0.4rem; }
-    .flashcard .card-ex   { font-size: 1rem; color: #6B7280; }
-    .flashcard .card-ex .ex-word { font-weight: 700; color: #374151; font-size: 1.1rem; }
+    .flashcard.fade-out { opacity: 0; transform: translateY(8px); }
+    .flashcard .big-char  { font-size: 7.5rem; font-weight: 700; line-height: 1; margin-bottom: 16px; }
+    .flashcard .card-emoji{ font-size: 3rem; margin-bottom: 10px; }
+    .flashcard .card-name { font-size: 22px; font-weight: 300; color: var(--on-dark); letter-spacing: 0.1px; margin-bottom: 4px; }
+    .flashcard .card-ex   { font-size: 13px; color: var(--mute-dark); }
+    .flashcard .card-ex .ex-word { font-weight: 700; color: var(--on-dark); font-size: 14px; }
 
-    .practice-btns { display: flex; flex-direction: column; gap: 0.75rem; }
+    .practice-btns { display: flex; flex-direction: column; gap: 10px; }
 
     /* Completion */
-    .completion-screen { text-align: center; padding: 2.5rem 0; display: none; }
-    .completion-screen .big-star { font-size: 5rem; margin-bottom: 0.5rem; }
-    .completion-screen .star-row { font-size: 2.8rem; margin-bottom: 1rem; }
-    .completion-screen h2 { font-size: 2.8rem; font-weight: 800; color: #F59E0B; margin-bottom: 0.4rem; }
-    .completion-screen .sub { font-size: 1.1rem; color: #6B7280; margin-bottom: 0.3rem; }
-    .completion-screen .sub2 { font-size: 0.95rem; color: #9CA3AF; margin-bottom: 2rem; }
+    .completion-screen { text-align: center; padding: 48px 0; display: none; }
+    .completion-screen .big-star { font-size: 5rem; margin-bottom: 8px; }
+    .completion-screen .star-row { font-size: 2.5rem; margin-bottom: 16px; }
+    .completion-screen h2 {
+      font-size: 44px;
+      font-weight: 300;
+      color: var(--on-dark);
+      letter-spacing: 0.1px;
+      margin-bottom: 8px;
+    }
+    .completion-screen .sub  { font-size: 18px; color: var(--body-dark); margin-bottom: 4px; }
+    .completion-screen .sub2 { font-size: 14px; color: var(--mute-dark); margin-bottom: 32px; }
 
     /* Voice bar */
     .voice-bar {
-      background: #F0FDF4;
-      border-bottom: 1px solid #BBF7D0;
-      padding: 0.45rem 1rem;
+      background: var(--elevated);
+      border-bottom: 1px solid var(--hairline);
+      padding: 8px 16px;
       display: none;
       align-items: center;
-      gap: 0.6rem;
-      font-size: 0.8rem;
+      gap: 10px;
+      font-size: 13px;
     }
-    .voice-bar label { color: #166534; font-weight: 700; white-space: nowrap; }
+    .voice-bar label { color: var(--mute-dark); font-weight: 400; white-space: nowrap; }
     .voice-bar select {
       flex: 1;
-      font-size: 0.78rem;
-      border: 1px solid #86EFAC;
-      border-radius: 8px;
-      padding: 0.2rem 0.5rem;
-      background: white;
-      color: #166534;
-      max-width: 280px;
+      font-size: 12px;
+      border: 1px solid var(--hairline);
+      border-radius: 4px;
+      padding: 4px 8px;
+      background: var(--card);
+      color: var(--on-dark);
+      max-width: 260px;
+      height: 28px;
     }
     .voice-badge {
-      font-size: 0.7rem;
-      background: #DCFCE7;
-      color: #15803D;
-      padding: 0.15rem 0.5rem;
-      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--primary);
+      color: var(--on-primary);
+      padding: 3px 10px;
+      border-radius: 9999px;
       white-space: nowrap;
-      font-weight: 700;
+      letter-spacing: 0;
     }
 
     /* TTS warning */
     .tts-warn {
-      background: #FEF3C7;
-      border: 1px solid #FDE68A;
-      border-radius: 10px;
-      padding: 0.6rem 0.75rem;
-      font-size: 0.8rem;
-      color: #92400E;
+      background: var(--elevated);
+      border: 1px solid rgba(200,27,58,0.4);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: var(--body-dark);
       text-align: center;
-      margin-bottom: 1rem;
+      margin-bottom: 16px;
       display: none;
     }
 
     @media (min-width: 500px) {
-      .char-grid { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 0.65rem; }
+      .char-grid { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 10px; }
       .char-card .ch { font-size: 2.5rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- Header -->
+<!-- Header (hero-band-dark) -->
 <div class="header">
-  <h1>📚 อ่านภาษาไทย</h1>
-  <p>สำหรับนักเรียน ป.๑–๒</p>
+  <div class="header-logo">📚</div>
+  <div class="header-text">
+    <h1>อ่านภาษาไทย</h1>
+    <p>สำหรับนักเรียน ป.๑–๒</p>
+  </div>
 </div>
 
-<!-- Tabs -->
+<!-- Tabs (filter-pill) -->
 <div class="tabs">
   <button class="tab-btn active" onclick="switchTab('consonants')" id="tab-consonants">
-    <span class="tab-icon">ก</span>
-    พยัญชนะ
+    <span class="tab-icon">ก</span>พยัญชนะ
   </button>
   <button class="tab-btn" onclick="switchTab('vowels')" id="tab-vowels">
-    <span class="tab-icon">า</span>
-    สระ
+    <span class="tab-icon">า</span>สระ
   </button>
   <button class="tab-btn" onclick="switchTab('practice')" id="tab-practice">
-    <span class="tab-icon">🎯</span>
-    ฝึกอ่าน
+    <span class="tab-icon">🎯</span>ฝึกอ่าน
   </button>
 </div>
 
-<!-- Voice selector bar -->
+<!-- Voice bar -->
 <div class="voice-bar" id="voice-bar">
   <label>🔊 เสียง:</label>
   <select id="voice-select" onchange="changeVoice(this.value)"></select>
@@ -297,30 +387,24 @@
 <!-- Content -->
 <div class="content">
 
-  <!-- ===== GRID VIEW ===== -->
+  <!-- GRID VIEW -->
   <div id="grid-view">
     <div class="tts-warn" id="tts-warn">
-      ⚠️ เบราว์เซอร์นี้ไม่รองรับเสียงภาษาไทย ลองใช้ Chrome บนคอมพิวเตอร์
+      ⚠️ ไม่พบเสียงภาษาไทย — ลองใช้ Chrome หรือเปิดผ่านเว็บ (GitHub Pages)
     </div>
-    <p class="hint">👆 แตะที่ตัวอักษรเพื่อฟังการออกเสียง</p>
+    <p class="hint">แตะที่ตัวอักษรเพื่อฟังการออกเสียง</p>
     <div class="char-grid" id="char-grid"></div>
   </div>
 
-  <!-- ===== PRACTICE VIEW ===== -->
+  <!-- PRACTICE VIEW -->
   <div id="practice-view" style="display:none">
     <div class="practice-container">
 
-      <!-- Set selector -->
       <div class="set-selector">
-        <button class="set-btn s-cons" id="set-btn-cons" onclick="setMode('consonants')">
-          พยัญชนะ (44)
-        </button>
-        <button class="set-btn" id="set-btn-vow" onclick="setMode('vowels')">
-          สระ (17)
-        </button>
+        <button class="set-btn s-cons" id="set-btn-cons" onclick="setMode('consonants')">พยัญชนะ (44)</button>
+        <button class="set-btn" id="set-btn-vow" onclick="setMode('vowels')">สระ (17)</button>
       </div>
 
-      <!-- Progress -->
       <div class="progress-info">
         <span id="progress-text">1 / 44</span>
         <span id="progress-pct">0%</span>
@@ -329,7 +413,6 @@
         <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
       </div>
 
-      <!-- Flashcard -->
       <div class="flashcard" id="flashcard">
         <div class="big-char" id="card-char">ก</div>
         <div class="card-emoji" id="card-emoji">🐔</div>
@@ -337,33 +420,25 @@
         <div class="card-ex">ตัวอย่าง: <span class="ex-word" id="card-example">ไก่</span></div>
       </div>
 
-      <!-- Buttons -->
       <div class="practice-btns" id="practice-btns">
-        <button class="btn btn-blue btn-full btn-lg" onclick="replayAudio()">
-          🔊 ฟังอีกครั้ง
-        </button>
-        <button class="btn btn-green btn-full btn-lg" id="next-btn" onclick="nextCard()">
-          ✅ อ่านได้แล้ว! ➡️
-        </button>
+        <button class="btn btn-gray btn-full btn-lg" onclick="replayAudio()">🔊 ฟังอีกครั้ง</button>
+        <button class="btn btn-blue btn-full btn-lg" id="next-btn" onclick="nextCard()">อ่านได้แล้ว ›</button>
       </div>
 
-      <!-- Completion -->
       <div class="completion-screen" id="completion-screen">
         <div class="big-star">🌟</div>
         <div class="star-row">⭐⭐⭐</div>
         <h2>เก่งมาก!</h2>
         <p class="sub" id="complete-msg">อ่านครบทั้ง 44 ตัวแล้ว!</p>
-        <p class="sub2">หนูเก่งที่สุดเลย 🎉</p>
-        <button class="btn btn-blue btn-full btn-lg" onclick="restart()">
-          🔄 เริ่มใหม่อีกครั้ง
-        </button>
+        <p class="sub2">หนูเก่งที่สุดเลย</p>
+        <button class="btn btn-blue btn-full btn-lg" onclick="restart()">🔄 เริ่มใหม่อีกครั้ง</button>
       </div>
 
     </div>
   </div>
 </div>
 
-<!-- ===== MODAL ===== -->
+<!-- MODAL -->
 <div class="modal-overlay hidden" id="modal-overlay" onclick="closeModal()">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-top" id="modal-top">
@@ -372,9 +447,7 @@
     <div class="modal-body">
       <div class="modal-emoji" id="modal-emoji">🐔</div>
       <div class="modal-name" id="modal-name">กอ ไก่</div>
-      <div class="modal-example">
-        ตัวอย่าง: <span class="ex-word" id="modal-example">ไก่</span>
-      </div>
+      <div class="modal-example">ตัวอย่าง: <span class="ex-word" id="modal-example">ไก่</span></div>
       <div class="modal-btns">
         <button class="btn btn-blue" onclick="replayModal()">🔊 ฟังอีกครั้ง</button>
         <button class="btn btn-gray" onclick="closeModal()">✕ ปิด</button>
@@ -387,7 +460,6 @@
 // ===========================
 //         DATA
 // ===========================
-
 const CONSONANTS = [
   { char:"ก",  name:"กอ ไก่",       example:"ไก่",      emoji:"🐔"  },
   { char:"ข",  name:"ขอ ไข่",       example:"ไข่",      emoji:"🥚"  },
@@ -455,23 +527,12 @@ const VOWELS = [
   { char:"อัว",  name:"สระ อัว",             example:"ตัว",   emoji:"🐛", speakText:"สระ อัว ตัวอย่าง ตัว"   },
 ];
 
-const COLORS = [
-  { bg:"#FEF2F2", border:"#FCA5A5" },
-  { bg:"#FFF7ED", border:"#FDBA74" },
-  { bg:"#FFFBEB", border:"#FCD34D" },
-  { bg:"#F7FEE7", border:"#BEF264" },
-  { bg:"#ECFDF5", border:"#6EE7B7" },
-  { bg:"#ECFEFF", border:"#67E8F9" },
-  { bg:"#EFF6FF", border:"#93C5FD" },
-  { bg:"#EEF2FF", border:"#A5B4FC" },
-  { bg:"#F5F3FF", border:"#C4B5FD" },
-  { bg:"#FDF4FF", border:"#E879F9" },
-  { bg:"#FFF1F2", border:"#FDA4AF" },
-  { bg:"#FEF9C3", border:"#FDE047" },
-  { bg:"#DCFCE7", border:"#86EFAC" },
-  { bg:"#CFFAFE", border:"#22D3EE" },
-  { bg:"#DBEAFE", border:"#60A5FA" },
-  { bg:"#F3E8FF", border:"#C084FC" },
+// Vibrant accent colors — bright on dark backgrounds (PS game tile style)
+const CHAR_COLORS = [
+  '#FF6B6B','#FF9F43','#FECA57','#48DBFB','#1DD1A1',
+  '#54A0FF','#A29BFE','#FD79A8','#00D2D3','#6C5CE7',
+  '#FDCB6E','#E17055','#74B9FF','#00CEC9','#E84393',
+  '#B2BEC3',
 ];
 
 // ===========================
@@ -483,13 +544,12 @@ let practiceIndex  = 0;
 let isCompleted    = false;
 let modalSpeakText = '';
 let cardTimer      = null;
-let selectedVoiceId = null;  // 'rv' = ResponsiveVoice | ชื่อเสียง system | null
+let selectedVoiceId = null;
+let currentCharColor = CHAR_COLORS[0];
 
 // ===========================
 //         SPEECH
 // ===========================
-
-// พยัญชนะ: "กอ ไก่ อ่านว่า กอ" | สระ: ใช้ speakText
 function getSpeakText(item) {
   if (item.speakText) return item.speakText;
   const sound = item.name.split(' ')[0];
@@ -497,16 +557,17 @@ function getSpeakText(item) {
 }
 
 function speak(text) {
-  // ResponsiveVoice (ออนไลน์ — ทำงานทุก OS/เบราว์เซอร์)
   if (selectedVoiceId === 'rv') {
     if (window.responsiveVoice) {
-      window.responsiveVoice.cancel();
-      window.responsiveVoice.speak(text, 'Thai Female', { rate: 0.8, pitch: 1 });
+      try {
+        window.responsiveVoice.cancel();
+        window.responsiveVoice.speak(text, 'Thai Female', { rate: 0.8, pitch: 1 });
+        return;
+      } catch(e) {
+        selectedVoiceId = null; // fall through
+      }
     }
-    return;
   }
-
-  // Web Speech API (เสียงระบบ)
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
@@ -520,38 +581,36 @@ function speak(text) {
   window.speechSynthesis.speak(u);
 }
 
-// คำสำคัญเสียงคุณภาพสูง
-const NEURAL_KW = ['neural', 'premium', 'enhanced', 'siri', 'niwat', 'premwadee', 'wavenet'];
+const NEURAL_KW = ['neural','premium','enhanced','siri','niwat','premwadee','wavenet'];
 
-function voiceBadge(voiceId) {
-  if (voiceId === 'rv') return '🌐 ออนไลน์';
-  if (!voiceId) return '';
-  const n = voiceId.toLowerCase();
-  return NEURAL_KW.some(k => n.includes(k)) ? '✨ Neural' : '';
+function voiceBadge(id) {
+  if (id === 'rv') return '🌐 ออนไลน์';
+  if (!id) return '';
+  return NEURAL_KW.some(k => id.toLowerCase().includes(k)) ? '✨ Neural' : '';
 }
 
-function updateBadge(voiceId) {
-  const badge = document.getElementById('voice-badge');
-  const label = voiceBadge(voiceId);
-  badge.textContent = label;
-  badge.style.display = label ? 'inline' : 'none';
+function updateBadge(id) {
+  const b = document.getElementById('voice-badge');
+  const lbl = voiceBadge(id);
+  b.textContent = lbl;
+  b.style.display = lbl ? 'inline' : 'none';
 }
 
 function loadVoices() {
   const options = [];
 
-  // ตัวเลือก 1: ResponsiveVoice (ถ้าโหลดแล้วและรองรับ)
-  if (window.responsiveVoice && window.responsiveVoice.voiceSupport()) {
-    options.push({ id: 'rv', label: '🌐 Thai Female — ออนไลน์ (แนะนำ)' });
+  // ResponsiveVoice — show if script loaded (skip voiceSupport check)
+  if (window.responsiveVoice) {
+    options.push({ id: 'rv', label: '🌐 Thai Female — ออนไลน์' });
   }
 
-  // ตัวเลือก 2: เสียงระบบ — ดึงและ deduplicate โดยใช้ชื่อ
+  // System voices — deduplicate by name
   if (window.speechSynthesis) {
     const seen = new Set();
     window.speechSynthesis.getVoices()
       .filter(v => v.lang.startsWith('th'))
       .forEach(v => {
-        if (seen.has(v.name)) return;   // ข้ามเสียงชื่อซ้ำ
+        if (seen.has(v.name)) return;
         seen.add(v.name);
         const star = NEURAL_KW.some(k => v.name.toLowerCase().includes(k)) ? ' ✨' : '';
         options.push({ id: v.name, label: v.name + star });
@@ -563,7 +622,6 @@ function loadVoices() {
     return;
   }
 
-  // เลือก default ครั้งแรก
   if (!selectedVoiceId) {
     const best = options.find(o =>
       o.id === 'rv' || NEURAL_KW.some(k => o.id.toLowerCase().includes(k))
@@ -571,9 +629,8 @@ function loadVoices() {
     selectedVoiceId = (best || options[0]).id;
   }
 
-  // สร้าง dropdown ใหม่ทั้งหมด (ล้างก่อนเพื่อป้องกันซ้ำ)
   const sel = document.getElementById('voice-select');
-  const keep = sel.value || selectedVoiceId;   // จำค่าที่เลือกไว้
+  const keep = sel.value || selectedVoiceId;
   sel.innerHTML = options
     .map(o => `<option value="${o.id}"${o.id === keep ? ' selected' : ''}>${o.label}</option>`)
     .join('');
@@ -596,11 +653,11 @@ function switchTab(tab) {
   document.getElementById('tab-' + tab).classList.add('active');
 
   if (tab === 'practice') {
-    document.getElementById('grid-view').style.display = 'none';
+    document.getElementById('grid-view').style.display     = 'none';
     document.getElementById('practice-view').style.display = 'block';
     updateCard();
   } else {
-    document.getElementById('grid-view').style.display = 'block';
+    document.getElementById('grid-view').style.display     = 'block';
     document.getElementById('practice-view').style.display = 'none';
     renderGrid(tab === 'vowels' ? VOWELS : CONSONANTS);
   }
@@ -613,12 +670,13 @@ function renderGrid(items) {
   const grid = document.getElementById('char-grid');
   grid.innerHTML = '';
   items.forEach((item, i) => {
-    const c = COLORS[i % COLORS.length];
+    const color = CHAR_COLORS[i % CHAR_COLORS.length];
     const btn = document.createElement('button');
     btn.className = 'char-card';
-    btn.style.background   = c.bg;
-    btn.style.borderColor  = c.border;
-    btn.innerHTML = `<span class="ch">${item.char}</span><span class="em">${item.emoji}</span>`;
+    btn.innerHTML = `
+      <span class="ch" style="color:${color}">${item.char}</span>
+      <span class="em">${item.emoji}</span>
+    `;
     btn.onclick = () => openModal(item, i);
     grid.appendChild(btn);
   });
@@ -628,17 +686,14 @@ function renderGrid(items) {
 //         MODAL
 // ===========================
 function openModal(item, colorIdx) {
-  const c = COLORS[colorIdx % COLORS.length];
+  const color = CHAR_COLORS[colorIdx % CHAR_COLORS.length];
   modalSpeakText = getSpeakText(item);
 
   document.getElementById('modal-char').textContent    = item.char;
+  document.getElementById('modal-char').style.color    = color;
   document.getElementById('modal-emoji').textContent   = item.emoji;
   document.getElementById('modal-name').textContent    = item.name;
   document.getElementById('modal-example').textContent = item.example;
-
-  const top = document.getElementById('modal-top');
-  top.style.background   = c.bg;
-  top.style.borderColor  = c.border;
 
   document.getElementById('modal-overlay').classList.remove('hidden');
   speak(modalSpeakText);
@@ -649,9 +704,7 @@ function closeModal() {
   window.speechSynthesis && window.speechSynthesis.cancel();
 }
 
-function replayModal() {
-  speak(modalSpeakText);
-}
+function replayModal() { speak(modalSpeakText); }
 
 // ===========================
 //         PRACTICE
@@ -664,22 +717,20 @@ function setMode(mode) {
   practiceMode  = mode;
   practiceIndex = 0;
   isCompleted   = false;
-
   const cBtn = document.getElementById('set-btn-cons');
   const vBtn = document.getElementById('set-btn-vow');
   cBtn.className = 'set-btn' + (mode === 'consonants' ? ' s-cons' : '');
   vBtn.className = 'set-btn' + (mode === 'vowels'     ? ' s-vow'  : '');
-
   showPracticeMain();
   updateCard();
 }
 
-function updateCard(withFade) {
+function updateCard() {
   const items = getPracticeItems();
   const item  = items[practiceIndex];
   if (!item) return;
 
-  const c     = COLORS[practiceIndex % COLORS.length];
+  const color = CHAR_COLORS[practiceIndex % CHAR_COLORS.length];
   const total = items.length;
   const pct   = Math.round((practiceIndex / total) * 100);
 
@@ -687,27 +738,24 @@ function updateCard(withFade) {
   document.getElementById('progress-pct').textContent  = `${pct}%`;
   document.getElementById('progress-fill').style.width = `${pct}%`;
 
-  const fc = document.getElementById('flashcard');
-  fc.style.background  = c.bg;
-  fc.style.borderColor = c.border;
+  const cardChar = document.getElementById('card-char');
+  cardChar.textContent = item.char;
+  cardChar.style.color = color;
 
-  document.getElementById('card-char').textContent    = item.char;
   document.getElementById('card-emoji').textContent   = item.emoji;
   document.getElementById('card-name').textContent    = item.name;
   document.getElementById('card-example').textContent = item.example;
 
   const isLast = practiceIndex + 1 >= total;
   document.getElementById('next-btn').textContent =
-    isLast ? '🏆 เสร็จแล้ว!' : '✅ อ่านได้แล้ว! ➡️';
+    isLast ? '🏆 เสร็จแล้ว!' : 'อ่านได้แล้ว ›';
 
-  // Auto-play
   clearTimeout(cardTimer);
   cardTimer = setTimeout(() => speak(getSpeakText(item)), 400);
 }
 
 function replayAudio() {
-  const items = getPracticeItems();
-  const item  = items[practiceIndex];
+  const item = getPracticeItems()[practiceIndex];
   if (item) speak(getSpeakText(item));
 }
 
@@ -716,25 +764,22 @@ function nextCard() {
   clearTimeout(cardTimer);
 
   if (practiceIndex + 1 >= items.length) {
-    // Done!
     isCompleted = true;
     window.speechSynthesis && window.speechSynthesis.cancel();
 
     document.getElementById('progress-text').textContent = `${items.length} / ${items.length}`;
     document.getElementById('progress-pct').textContent  = '100%';
     document.getElementById('progress-fill').style.width = '100%';
-    document.getElementById('complete-msg').textContent  =
-      `อ่านครบทั้ง ${items.length} ตัวแล้ว!`;
+    document.getElementById('complete-msg').textContent  = `อ่านครบทั้ง ${items.length} ตัวแล้ว!`;
 
-    document.getElementById('flashcard').style.display      = 'none';
-    document.getElementById('practice-btns').style.display  = 'none';
+    document.getElementById('flashcard').style.display       = 'none';
+    document.getElementById('practice-btns').style.display   = 'none';
     document.getElementById('completion-screen').style.display = 'block';
 
     setTimeout(() => speak('เก่งมาก! หนูอ่านครบทุกตัวแล้ว'), 400);
     return;
   }
 
-  // Animate transition
   const fc = document.getElementById('flashcard');
   fc.classList.add('fade-out');
   setTimeout(() => {
@@ -745,9 +790,9 @@ function nextCard() {
 }
 
 function showPracticeMain() {
-  document.getElementById('flashcard').style.display         = 'block';
-  document.getElementById('practice-btns').style.display    = 'flex';
-  document.getElementById('completion-screen').style.display = 'none';
+  document.getElementById('flashcard').style.display          = 'block';
+  document.getElementById('practice-btns').style.display     = 'flex';
+  document.getElementById('completion-screen').style.display  = 'none';
 }
 
 function restart() {
@@ -762,20 +807,27 @@ function restart() {
 // ===========================
 renderGrid(CONSONANTS);
 
-// โหลดเสียงทันทีถ้าพร้อม
+// System voices
 if (window.speechSynthesis) {
   if (window.speechSynthesis.getVoices().length > 0) loadVoices();
   window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
 }
 
-// ResponsiveVoice: โหลดซ้ำเมื่อพร้อม (ใช้ callback ถ้ามี)
-if (window.responsiveVoice) {
-  responsiveVoice.OnReady = loadVoices;
-  loadVoices(); // ลองเรียกทันทีด้วย
-} else {
-  // RV โหลดช้า — รอหลังหน้าเว็บโหลดเสร็จ
-  window.addEventListener('load', () => setTimeout(loadVoices, 800));
-}
+// ResponsiveVoice — retry หลายรอบ (RV โหลดช้า)
+(function initRV() {
+  if (window.responsiveVoice) {
+    window.responsiveVoice.OnReady = loadVoices;
+    loadVoices();
+  } else {
+    // ลองใหม่หลังหน้าโหลดเสร็จ: 300ms, 800ms, 2000ms
+    const delays = [300, 800, 2000];
+    delays.forEach(ms => {
+      window.addEventListener('load', () => setTimeout(() => {
+        if (window.responsiveVoice) loadVoices();
+      }, ms));
+    });
+  }
+})();
 </script>
 </body>
 </html>
