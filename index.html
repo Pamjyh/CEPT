@@ -4,367 +4,400 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>อ่านภาษาไทย</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+Thai:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <script src="https://code.responsivevoice.org/responsivevoice.js?key=FREE"></script>
+  <!-- Inter (figmaSans substitute) + JetBrains Mono (figmaMono substitute) + Noto Sans Thai -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;480;540;700&family=JetBrains+Mono:wght@400&family=Noto+Sans+Thai:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
-    /* ===== PlayStation Design System ===== */
+    /* ===== Figma Design System ===== */
     :root {
-      --primary:          #0070d1;
-      --primary-pressed:  #0064b7;
-      --primary-active:   #004d8d;
-      --commerce:         #d53b00;
-      --on-primary:       #ffffff;
-      --on-dark:          #ffffff;
-      --body-dark:        rgba(255,255,255,0.7);
-      --mute-dark:        rgba(229,229,229,0.55);
-      --ash-dark:         rgba(229,229,229,0.2);
-      --canvas-dark:      #000000;
-      --elevated:         #121314;
-      --card:             #181818;
-      --hairline:         rgba(229,229,229,0.2);
-      --warning:          #c81b3a;
+      --primary:         #000000;
+      --on-primary:      #ffffff;
+      --ink:             #000000;
+      --canvas:          #ffffff;
+      --surface-soft:    #f7f7f5;
+      --hairline:        #e6e6e6;
+      --hairline-soft:   #f1f1f1;
+      --inverse-canvas:  #000000;
+      --inverse-ink:     #ffffff;
+
+      /* Color blocks */
+      --lime:   #dceeb1;
+      --lilac:  #c5b0f4;
+      --cream:  #f4ecd6;
+      --mint:   #c8e6cd;
+      --pink:   #efd4d4;
+      --coral:  #f3c9b6;
+      --navy:   #1f1d3d;
+
+      --accent-magenta: #ff3d8b;
+      --success:        #1ea64a;
+
+      /* Border radius */
+      --r-xs:   2px;
+      --r-sm:   6px;
+      --r-md:   8px;
+      --r-lg:   24px;
+      --r-xl:   32px;
+      --r-pill: 50px;
+      --r-full: 9999px;
     }
 
     * { margin:0; padding:0; box-sizing:border-box; }
 
     body {
-      font-family: 'Noto Sans Thai', 'Roboto', system-ui, sans-serif;
-      background: var(--canvas-dark);
-      color: var(--on-dark);
+      font-family: 'Noto Sans Thai', 'Inter', system-ui, sans-serif;
+      background: var(--canvas);
+      color: var(--ink);
       min-height: 100vh;
     }
 
-    /* ===== HEADER (hero-band-dark) ===== */
+    /* ===== TOP NAV ===== */
     .header {
-      background: var(--canvas-dark);
+      background: var(--canvas);
       border-bottom: 1px solid var(--hairline);
-      padding: 20px 24px;
+      height: 56px;
       display: flex;
       align-items: center;
+      padding: 0 24px;
       gap: 12px;
-    }
-    .header-logo {
-      width: 36px;
-      height: 36px;
-      background: var(--primary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-    .header-text h1 {
-      font-size: 22px;
-      font-weight: 300;
-      letter-spacing: 0.1px;
-      color: var(--on-dark);
-      line-height: 1.25;
-    }
-    .header-text p {
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--mute-dark);
-      margin-top: 2px;
-    }
-
-    /* ===== TABS (filter-pill row) ===== */
-    .tabs {
-      display: flex;
-      gap: 8px;
-      padding: 10px 16px;
-      background: var(--elevated);
-      border-bottom: 1px solid var(--hairline);
       position: sticky;
       top: 0;
+      z-index: 300;
+    }
+    .header-title {
+      font-size: 18px;
+      font-weight: 540;
+      letter-spacing: -0.26px;
+      color: var(--ink);
+      flex: 1;
+    }
+    .header-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.60px;
+      text-transform: uppercase;
+      color: #666;
+    }
+
+    /* ===== TABS (pricing-tab style) ===== */
+    .tabs {
+      display: flex;
+      gap: 6px;
+      padding: 10px 16px;
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline-soft);
+      position: sticky;
+      top: 56px;
       z-index: 200;
     }
     .tab-btn {
       flex: 1;
-      padding: 8px 12px;
+      padding: 8px 14px;
       border: 1px solid var(--hairline);
-      border-radius: 9999px;
+      border-radius: var(--r-pill);
       cursor: pointer;
       font-family: inherit;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.324px;
-      line-height: 1.25;
+      font-size: 14px;
+      font-weight: 480;
+      letter-spacing: -0.10px;
+      line-height: 1.4;
       transition: background 0.15s, color 0.15s, border-color 0.15s;
-      background: transparent;
-      color: var(--mute-dark);
+      background: var(--canvas);
+      color: var(--ink);
     }
-    .tab-icon { display: block; font-size: 1.25rem; line-height: 1.2; margin-bottom: 2px; }
+    .tab-icon { display: block; font-size: 1.2rem; line-height: 1.2; }
     .tab-btn.active {
       background: var(--primary);
       color: var(--on-primary);
       border-color: var(--primary);
     }
-    .tab-btn:not(.active):hover {
-      background: rgba(255,255,255,0.06);
-      color: var(--on-dark);
-    }
+    .tab-btn:not(.active):hover { background: var(--surface-soft); }
 
-    /* ===== CONTENT ===== */
-    .content { padding: 16px; max-width: 720px; margin: 0 auto; }
-    .hint {
-      text-align: center;
-      color: var(--mute-dark);
-      font-size: 14px;
-      margin-bottom: 16px;
-    }
-
-    /* ===== CHARACTER GRID ===== */
-    .char-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
-      gap: 8px;
-    }
-    .char-card {
-      background: var(--card);
-      border: 1px solid var(--hairline);
-      border-radius: 8px;
-      padding: 12px 4px 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      min-height: 82px;
-    }
-    .char-card:hover {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 1px var(--primary);
-    }
-    .char-card:active { opacity: 0.8; }
-    .char-card .ch { font-size: 2.1rem; font-weight: 700; line-height: 1.2; }
-    .char-card .em { font-size: 0.95rem; margin-top: 3px; }
-
-    /* ===== MODAL ===== */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 16px;
-      backdrop-filter: blur(6px);
-    }
-    .modal-overlay.hidden { display: none; }
-    .modal {
-      background: var(--elevated);
-      border: 1px solid var(--hairline);
-      border-radius: 16px;
-      max-width: 340px;
-      width: 100%;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-      animation: pop-in 0.18s ease;
-    }
-    @keyframes pop-in {
-      from { transform: scale(0.88); opacity: 0; }
-      to   { transform: scale(1);    opacity: 1; }
-    }
-    .modal-top {
-      background: var(--card);
-      padding: 40px 24px 32px;
-      text-align: center;
-      border-bottom: 1px solid var(--hairline);
-    }
-    .modal-top .big-char { font-size: 6.5rem; font-weight: 700; line-height: 1; }
-    .modal-body { padding: 24px 24px 28px; text-align: center; }
-    .modal-emoji   { font-size: 3rem; margin-bottom: 10px; }
-    .modal-name    { font-size: 22px; font-weight: 300; color: var(--on-dark); letter-spacing: 0.1px; margin-bottom: 6px; }
-    .modal-example { font-size: 14px; color: var(--mute-dark); margin-bottom: 24px; }
-    .modal-example .ex-word { font-weight: 700; color: var(--on-dark); font-size: 15px; }
-    .modal-btns { display: flex; gap: 10px; }
-
-    /* ===== BUTTONS (pill — button-primary & button-secondary-dark) ===== */
-    .btn {
-      flex: 1;
-      padding: 0 28px;
-      height: 48px;
-      border: none;
-      border-radius: 9999px;
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.45px;
-      cursor: pointer;
-      transition: background 0.15s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    .btn:active { opacity: 0.85; }
-    .btn-blue {
-      background: var(--primary);
-      color: var(--on-primary);
-    }
-    .btn-blue:hover { background: var(--primary-pressed); }
-    .btn-green {
-      background: #1a9e6e;
-      color: #ffffff;
-    }
-    .btn-green:hover { background: #15835b; }
-    .btn-gray {
-      background: transparent;
-      color: var(--on-dark);
-      border: 1px solid var(--hairline);
-    }
-    .btn-gray:hover { background: rgba(255,255,255,0.06); }
-    .btn-full  { width: 100%; flex: none; }
-    .btn-lg    { height: 52px; font-size: 16px; }
-
-    /* ===== PRACTICE MODE ===== */
-    .practice-container { max-width: 400px; margin: 0 auto; }
-
-    .set-selector { display: flex; gap: 8px; margin-bottom: 16px; }
-    .set-btn {
-      flex: 1;
-      padding: 8px 12px;
-      border: 1px solid var(--hairline);
-      border-radius: 9999px;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.324px;
-      cursor: pointer;
-      transition: all 0.15s;
-      background: transparent;
-      color: var(--mute-dark);
-    }
-    .set-btn.s-cons, .set-btn.s-vow {
-      background: var(--primary);
-      color: var(--on-primary);
-      border-color: var(--primary);
-    }
-
-    /* Progress bar */
-    .progress-info {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--mute-dark);
-      margin-bottom: 6px;
-    }
-    .progress-bar-bg {
-      width: 100%;
-      height: 4px;
-      background: var(--card);
-      border-radius: 9999px;
-      overflow: hidden;
-      margin-bottom: 24px;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: var(--primary);
-      border-radius: 9999px;
-      transition: width 0.45s ease;
-    }
-
-    /* Flashcard */
-    .flashcard {
-      background: var(--card);
-      border: 1px solid var(--hairline);
-      border-radius: 8px;
-      padding: 32px 24px 28px;
-      text-align: center;
-      margin-bottom: 16px;
-      transition: opacity 0.15s, transform 0.15s;
-    }
-    .flashcard.fade-out { opacity: 0; transform: translateY(8px); }
-    .flashcard .big-char  { font-size: 7.5rem; font-weight: 700; line-height: 1; margin-bottom: 16px; }
-    .flashcard .card-emoji{ font-size: 3rem; margin-bottom: 10px; }
-    .flashcard .card-name { font-size: 22px; font-weight: 300; color: var(--on-dark); letter-spacing: 0.1px; margin-bottom: 4px; }
-    .flashcard .card-ex   { font-size: 13px; color: var(--mute-dark); }
-    .flashcard .card-ex .ex-word { font-weight: 700; color: var(--on-dark); font-size: 14px; }
-
-    .practice-btns { display: flex; flex-direction: column; gap: 10px; }
-
-    /* Completion */
-    .completion-screen { text-align: center; padding: 48px 0; display: none; }
-    .completion-screen .big-star { font-size: 5rem; margin-bottom: 8px; }
-    .completion-screen .star-row { font-size: 2.5rem; margin-bottom: 16px; }
-    .completion-screen h2 {
-      font-size: 44px;
-      font-weight: 300;
-      color: var(--on-dark);
-      letter-spacing: 0.1px;
-      margin-bottom: 8px;
-    }
-    .completion-screen .sub  { font-size: 18px; color: var(--body-dark); margin-bottom: 4px; }
-    .completion-screen .sub2 { font-size: 14px; color: var(--mute-dark); margin-bottom: 32px; }
-
-    /* Voice bar */
+    /* ===== VOICE BAR ===== */
     .voice-bar {
-      background: var(--elevated);
-      border-bottom: 1px solid var(--hairline);
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline-soft);
       padding: 8px 16px;
       display: none;
       align-items: center;
       gap: 10px;
       font-size: 13px;
     }
-    .voice-bar label { color: var(--mute-dark); font-weight: 400; white-space: nowrap; }
+    .voice-bar label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.54px;
+      text-transform: uppercase;
+      color: #666;
+      white-space: nowrap;
+    }
     .voice-bar select {
       flex: 1;
-      font-size: 12px;
+      font-size: 13px;
       border: 1px solid var(--hairline);
-      border-radius: 4px;
-      padding: 4px 8px;
-      background: var(--card);
-      color: var(--on-dark);
+      border-radius: var(--r-md);
+      padding: 5px 10px;
+      background: var(--canvas);
+      color: var(--ink);
       max-width: 260px;
-      height: 28px;
+      height: 30px;
+      font-family: inherit;
     }
     .voice-badge {
-      font-size: 12px;
-      font-weight: 500;
-      background: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.54px;
+      text-transform: uppercase;
+      background: var(--ink);
       color: var(--on-primary);
       padding: 3px 10px;
-      border-radius: 9999px;
+      border-radius: var(--r-full);
       white-space: nowrap;
-      letter-spacing: 0;
     }
 
-    /* TTS warning */
-    .tts-warn {
-      background: var(--elevated);
-      border: 1px solid rgba(200,27,58,0.4);
-      border-radius: 8px;
-      padding: 10px 16px;
-      font-size: 13px;
-      color: var(--body-dark);
-      text-align: center;
+    /* ===== TTS NOTICE ===== */
+    .tts-notice {
+      background: var(--lime);
+      border-radius: var(--r-lg);
+      padding: 14px 20px;
       margin-bottom: 16px;
       display: none;
     }
+    .tts-notice-title {
+      font-size: 14px;
+      font-weight: 540;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .tts-notice-body {
+      font-size: 13px;
+      font-weight: 330;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    /* ===== CONTENT ===== */
+    .content { padding: 16px; max-width: 720px; margin: 0 auto; }
+    .hint {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.54px;
+      text-transform: uppercase;
+      color: #999;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    /* ===== CHARACTER GRID (color-block-section style) ===== */
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+      gap: 8px;
+    }
+    .char-card {
+      border-radius: var(--r-lg);
+      padding: 14px 4px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.12s, box-shadow 0.12s;
+      min-height: 86px;
+      border: none;
+      font-family: inherit;
+    }
+    .char-card:hover {
+      transform: scale(1.06);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .char-card:active { transform: scale(0.96); }
+    .char-card .ch { font-size: 2.2rem; font-weight: 700; line-height: 1.1; color: var(--ink); }
+    .char-card .em { font-size: 0.95rem; margin-top: 4px; }
+
+    /* navy card — inverse text */
+    .char-card.inv .ch { color: var(--inverse-ink); }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-xl);
+      max-width: 340px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.14);
+      animation: pop-in 0.18s ease;
+    }
+    @keyframes pop-in {
+      from { transform: scale(0.9); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .modal-top {
+      padding: 40px 24px 28px;
+      text-align: center;
+      border-bottom: 1px solid var(--hairline-soft);
+    }
+    .modal-top .big-char {
+      font-size: 6rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--ink);
+    }
+    /* modal-top gets inline bg from JS matching the card color */
+    .modal-body { padding: 20px 24px 26px; text-align: center; }
+    .modal-emoji   { font-size: 2.8rem; margin-bottom: 10px; }
+    .modal-name    { font-size: 24px; font-weight: 700; color: var(--ink); letter-spacing: 0; margin-bottom: 6px; line-height: 1.45; }
+    .modal-example { font-size: 14px; font-weight: 330; color: #555; margin-bottom: 20px; letter-spacing: -0.14px; }
+    .modal-example .ex-word { font-weight: 700; color: var(--ink); font-size: 15px; }
+    .modal-btns { display: flex; gap: 8px; }
+
+    /* ===== BUTTONS (pill) ===== */
+    .btn {
+      flex: 1;
+      padding: 10px 20px;
+      border-radius: var(--r-pill);
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 480;
+      letter-spacing: -0.10px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: none;
+      min-height: 44px;
+    }
+    .btn:hover  { opacity: 0.85; }
+    .btn:active { opacity: 0.7;  }
+    .btn-primary   { background: var(--primary); color: var(--on-primary); }
+    .btn-secondary { background: var(--canvas);  color: var(--ink); border: 1px solid var(--hairline); }
+    .btn-full  { width: 100%; flex: none; }
+    .btn-lg    { font-size: 17px; min-height: 48px; }
+
+    /* ===== PRACTICE MODE ===== */
+    .practice-container { max-width: 400px; margin: 0 auto; }
+
+    .set-selector { display: flex; gap: 6px; margin-bottom: 16px; }
+    .set-btn {
+      flex: 1;
+      padding: 8px 14px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-pill);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 480;
+      letter-spacing: -0.10px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: var(--canvas);
+      color: var(--ink);
+    }
+    .set-btn.active-set {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    /* Progress */
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.54px;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 6px;
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 3px;
+      background: var(--hairline-soft);
+      border-radius: var(--r-full);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: var(--r-full);
+      transition: width 0.45s ease;
+    }
+
+    /* Flashcard (color-block-section style) */
+    .flashcard {
+      border-radius: var(--r-lg);
+      padding: 32px 24px 26px;
+      text-align: center;
+      margin-bottom: 16px;
+      transition: opacity 0.15s, transform 0.15s;
+      border: none;
+    }
+    .flashcard.fade-out { opacity: 0; transform: translateY(8px); }
+    .flashcard .big-char  { font-size: 7.5rem; font-weight: 700; line-height: 1; margin-bottom: 14px; color: var(--ink); }
+    .flashcard .card-emoji{ font-size: 3rem; margin-bottom: 8px; }
+    .flashcard .card-name { font-size: 24px; font-weight: 700; color: var(--ink); margin-bottom: 4px; line-height: 1.45; }
+    .flashcard .card-ex   { font-size: 14px; font-weight: 330; color: #444; letter-spacing: -0.14px; }
+    .flashcard .card-ex .ex-word { font-weight: 700; color: var(--ink); font-size: 15px; }
+    .flashcard.inv .big-char, .flashcard.inv .card-name,
+    .flashcard.inv .card-ex, .flashcard.inv .card-ex .ex-word { color: var(--inverse-ink); }
+
+    .practice-btns { display: flex; flex-direction: column; gap: 8px; }
+
+    /* Completion */
+    .completion-screen { text-align: center; padding: 48px 24px; display: none; }
+    .completion-block {
+      background: var(--lime);
+      border-radius: var(--r-xl);
+      padding: 48px 24px;
+      margin-bottom: 24px;
+    }
+    .completion-screen .big-star { font-size: 4rem; margin-bottom: 8px; }
+    .completion-screen h2 {
+      font-size: 44px;
+      font-weight: 340;
+      color: var(--ink);
+      letter-spacing: -0.96px;
+      line-height: 1.10;
+      margin-bottom: 10px;
+    }
+    .completion-screen .sub  { font-size: 18px; font-weight: 320; color: var(--ink); letter-spacing: -0.26px; margin-bottom: 4px; }
+    .completion-screen .sub2 { font-size: 14px; font-weight: 330; color: #555; letter-spacing: -0.14px; }
 
     @media (min-width: 500px) {
       .char-grid { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 10px; }
-      .char-card .ch { font-size: 2.5rem; }
+      .char-card .ch { font-size: 2.6rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- Header (hero-band-dark) -->
+<!-- Top Nav -->
 <div class="header">
-  <div class="header-logo">📚</div>
-  <div class="header-text">
-    <h1>อ่านภาษาไทย</h1>
-    <p>สำหรับนักเรียน ป.๑–๒</p>
-  </div>
+  <div class="header-title">อ่านภาษาไทย</div>
+  <div class="header-sub">ป.๑–๒</div>
 </div>
 
-<!-- Tabs (filter-pill) -->
+<!-- Tabs -->
 <div class="tabs">
   <button class="tab-btn active" onclick="switchTab('consonants')" id="tab-consonants">
     <span class="tab-icon">ก</span>พยัญชนะ
@@ -379,9 +412,9 @@
 
 <!-- Voice bar -->
 <div class="voice-bar" id="voice-bar">
-  <label>🔊 เสียง:</label>
+  <label>เสียง</label>
   <select id="voice-select" onchange="changeVoice(this.value)"></select>
-  <span class="voice-badge" id="voice-badge"></span>
+  <span class="voice-badge" id="voice-badge" style="display:none"></span>
 </div>
 
 <!-- Content -->
@@ -389,10 +422,11 @@
 
   <!-- GRID VIEW -->
   <div id="grid-view">
-    <div class="tts-warn" id="tts-warn">
-      ⚠️ ไม่พบเสียงภาษาไทย — ลองใช้ Chrome หรือเปิดผ่านเว็บ (GitHub Pages)
+    <div class="tts-notice" id="tts-notice">
+      <div class="tts-notice-title">💡 รับเสียงคุณภาพสูงขึ้น</div>
+      <div class="tts-notice-body">ดาวน์โหลด <strong>Kanya Enhanced</strong> ได้ที่ System Settings → Accessibility → Spoken Content → Manage Voices → Thai</div>
     </div>
-    <p class="hint">แตะที่ตัวอักษรเพื่อฟังการออกเสียง</p>
+    <p class="hint">แตะตัวอักษรเพื่อฟังเสียง</p>
     <div class="char-grid" id="char-grid"></div>
   </div>
 
@@ -401,7 +435,7 @@
     <div class="practice-container">
 
       <div class="set-selector">
-        <button class="set-btn s-cons" id="set-btn-cons" onclick="setMode('consonants')">พยัญชนะ (44)</button>
+        <button class="set-btn active-set" id="set-btn-cons" onclick="setMode('consonants')">พยัญชนะ (44)</button>
         <button class="set-btn" id="set-btn-vow" onclick="setMode('vowels')">สระ (17)</button>
       </div>
 
@@ -413,7 +447,7 @@
         <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
       </div>
 
-      <div class="flashcard" id="flashcard">
+      <div class="flashcard" id="flashcard" style="background:var(--lime)">
         <div class="big-char" id="card-char">ก</div>
         <div class="card-emoji" id="card-emoji">🐔</div>
         <div class="card-name" id="card-name">กอ ไก่</div>
@@ -421,17 +455,18 @@
       </div>
 
       <div class="practice-btns" id="practice-btns">
-        <button class="btn btn-gray btn-full btn-lg" onclick="replayAudio()">🔊 ฟังอีกครั้ง</button>
-        <button class="btn btn-blue btn-full btn-lg" id="next-btn" onclick="nextCard()">อ่านได้แล้ว ›</button>
+        <button class="btn btn-secondary btn-full btn-lg" onclick="replayAudio()">🔊 ฟังอีกครั้ง</button>
+        <button class="btn btn-primary btn-full btn-lg" id="next-btn" onclick="nextCard()">อ่านได้แล้ว →</button>
       </div>
 
       <div class="completion-screen" id="completion-screen">
-        <div class="big-star">🌟</div>
-        <div class="star-row">⭐⭐⭐</div>
-        <h2>เก่งมาก!</h2>
-        <p class="sub" id="complete-msg">อ่านครบทั้ง 44 ตัวแล้ว!</p>
-        <p class="sub2">หนูเก่งที่สุดเลย</p>
-        <button class="btn btn-blue btn-full btn-lg" onclick="restart()">🔄 เริ่มใหม่อีกครั้ง</button>
+        <div class="completion-block">
+          <div class="big-star">🌟</div>
+          <h2>เก่งมาก!</h2>
+          <p class="sub" id="complete-msg">อ่านครบทั้ง 44 ตัวแล้ว!</p>
+          <p class="sub2">หนูเก่งที่สุดเลย</p>
+        </div>
+        <button class="btn btn-primary btn-full btn-lg" onclick="restart()">เริ่มใหม่อีกครั้ง</button>
       </div>
 
     </div>
@@ -449,8 +484,8 @@
       <div class="modal-name" id="modal-name">กอ ไก่</div>
       <div class="modal-example">ตัวอย่าง: <span class="ex-word" id="modal-example">ไก่</span></div>
       <div class="modal-btns">
-        <button class="btn btn-blue" onclick="replayModal()">🔊 ฟังอีกครั้ง</button>
-        <button class="btn btn-gray" onclick="closeModal()">✕ ปิด</button>
+        <button class="btn btn-primary" onclick="replayModal()">🔊 ฟังอีกครั้ง</button>
+        <button class="btn btn-secondary" onclick="closeModal()">✕ ปิด</button>
       </div>
     </div>
   </div>
@@ -527,12 +562,16 @@ const VOWELS = [
   { char:"อัว",  name:"สระ อัว",             example:"ตัว",   emoji:"🐛", speakText:"สระ อัว ตัวอย่าง ตัว"   },
 ];
 
-// Vibrant accent colors — bright on dark backgrounds (PS game tile style)
-const CHAR_COLORS = [
-  '#FF6B6B','#FF9F43','#FECA57','#48DBFB','#1DD1A1',
-  '#54A0FF','#A29BFE','#FD79A8','#00D2D3','#6C5CE7',
-  '#FDCB6E','#E17055','#74B9FF','#00CEC9','#E84393',
-  '#B2BEC3',
+// Figma color blocks cycling through pastel palette
+// [bgColor, isNavy]
+const BLOCKS = [
+  ['#dceeb1', false],  // lime
+  ['#c5b0f4', false],  // lilac
+  ['#f4ecd6', false],  // cream
+  ['#c8e6cd', false],  // mint
+  ['#efd4d4', false],  // pink
+  ['#f3c9b6', false],  // coral
+  ['#1f1d3d', true ],  // navy (inverse)
 ];
 
 // ===========================
@@ -545,7 +584,6 @@ let isCompleted    = false;
 let modalSpeakText = '';
 let cardTimer      = null;
 let selectedVoiceId = null;
-let currentCharColor = CHAR_COLORS[0];
 
 // ===========================
 //         SPEECH
@@ -557,17 +595,6 @@ function getSpeakText(item) {
 }
 
 function speak(text) {
-  if (selectedVoiceId === 'rv') {
-    if (window.responsiveVoice) {
-      try {
-        window.responsiveVoice.cancel();
-        window.responsiveVoice.speak(text, 'Thai Female', { rate: 0.8, pitch: 1 });
-        return;
-      } catch(e) {
-        selectedVoiceId = null; // fall through
-      }
-    }
-  }
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
@@ -583,56 +610,53 @@ function speak(text) {
 
 const NEURAL_KW = ['neural','premium','enhanced','siri','niwat','premwadee','wavenet'];
 
-function voiceBadge(id) {
-  if (id === 'rv') return '🌐 ออนไลน์';
-  if (!id) return '';
-  return NEURAL_KW.some(k => id.toLowerCase().includes(k)) ? '✨ Neural' : '';
-}
-
 function updateBadge(id) {
   const b = document.getElementById('voice-badge');
-  const lbl = voiceBadge(id);
-  b.textContent = lbl;
-  b.style.display = lbl ? 'inline' : 'none';
+  if (!id) { b.style.display = 'none'; return; }
+  const isNeural = NEURAL_KW.some(k => id.toLowerCase().includes(k));
+  if (isNeural) {
+    b.textContent = 'Enhanced';
+    b.style.display = 'inline';
+  } else {
+    b.style.display = 'none';
+  }
 }
 
 function loadVoices() {
-  const options = [];
+  if (!window.speechSynthesis) return;
 
-  // ResponsiveVoice — show if script loaded (skip voiceSupport check)
-  if (window.responsiveVoice) {
-    options.push({ id: 'rv', label: '🌐 Thai Female — ออนไลน์' });
-  }
+  const seen = new Set();
+  const thaiVoices = window.speechSynthesis.getVoices()
+    .filter(v => v.lang.startsWith('th'))
+    .filter(v => {
+      if (seen.has(v.name)) return false;
+      seen.add(v.name);
+      return true;
+    });
 
-  // System voices — deduplicate by name
-  if (window.speechSynthesis) {
-    const seen = new Set();
-    window.speechSynthesis.getVoices()
-      .filter(v => v.lang.startsWith('th'))
-      .forEach(v => {
-        if (seen.has(v.name)) return;
-        seen.add(v.name);
-        const star = NEURAL_KW.some(k => v.name.toLowerCase().includes(k)) ? ' ✨' : '';
-        options.push({ id: v.name, label: v.name + star });
-      });
-  }
+  if (thaiVoices.length === 0) return;
 
-  if (options.length === 0) {
-    document.getElementById('tts-warn').style.display = 'block';
-    return;
-  }
+  // Show Kanya Enhanced notice only if no enhanced voice found
+  const hasEnhanced = thaiVoices.some(v =>
+    NEURAL_KW.some(k => v.name.toLowerCase().includes(k))
+  );
+  document.getElementById('tts-notice').style.display = hasEnhanced ? 'none' : 'block';
 
+  // Auto-select: prefer enhanced/neural, else first
   if (!selectedVoiceId) {
-    const best = options.find(o =>
-      o.id === 'rv' || NEURAL_KW.some(k => o.id.toLowerCase().includes(k))
+    const best = thaiVoices.find(v =>
+      NEURAL_KW.some(k => v.name.toLowerCase().includes(k))
     );
-    selectedVoiceId = (best || options[0]).id;
+    selectedVoiceId = (best || thaiVoices[0]).name;
   }
 
   const sel = document.getElementById('voice-select');
   const keep = sel.value || selectedVoiceId;
-  sel.innerHTML = options
-    .map(o => `<option value="${o.id}"${o.id === keep ? ' selected' : ''}>${o.label}</option>`)
+  sel.innerHTML = thaiVoices
+    .map(v => {
+      const tag = NEURAL_KW.some(k => v.name.toLowerCase().includes(k)) ? ' ✨' : '';
+      return `<option value="${v.name}"${v.name === keep ? ' selected' : ''}>${v.name}${tag}</option>`;
+    })
     .join('');
 
   updateBadge(selectedVoiceId);
@@ -670,13 +694,11 @@ function renderGrid(items) {
   const grid = document.getElementById('char-grid');
   grid.innerHTML = '';
   items.forEach((item, i) => {
-    const color = CHAR_COLORS[i % CHAR_COLORS.length];
+    const [bg, isNav] = BLOCKS[i % BLOCKS.length];
     const btn = document.createElement('button');
-    btn.className = 'char-card';
-    btn.innerHTML = `
-      <span class="ch" style="color:${color}">${item.char}</span>
-      <span class="em">${item.emoji}</span>
-    `;
+    btn.className = 'char-card' + (isNav ? ' inv' : '');
+    btn.style.background = bg;
+    btn.innerHTML = `<span class="ch">${item.char}</span><span class="em">${item.emoji}</span>`;
     btn.onclick = () => openModal(item, i);
     grid.appendChild(btn);
   });
@@ -686,14 +708,18 @@ function renderGrid(items) {
 //         MODAL
 // ===========================
 function openModal(item, colorIdx) {
-  const color = CHAR_COLORS[colorIdx % CHAR_COLORS.length];
+  const [bg, isNav] = BLOCKS[colorIdx % BLOCKS.length];
   modalSpeakText = getSpeakText(item);
 
-  document.getElementById('modal-char').textContent    = item.char;
-  document.getElementById('modal-char').style.color    = color;
+  const charEl = document.getElementById('modal-char');
+  charEl.textContent = item.char;
+  charEl.style.color = isNav ? '#ffffff' : '#000000';
+
   document.getElementById('modal-emoji').textContent   = item.emoji;
   document.getElementById('modal-name').textContent    = item.name;
   document.getElementById('modal-example').textContent = item.example;
+
+  document.getElementById('modal-top').style.background = bg;
 
   document.getElementById('modal-overlay').classList.remove('hidden');
   speak(modalSpeakText);
@@ -717,10 +743,10 @@ function setMode(mode) {
   practiceMode  = mode;
   practiceIndex = 0;
   isCompleted   = false;
-  const cBtn = document.getElementById('set-btn-cons');
-  const vBtn = document.getElementById('set-btn-vow');
-  cBtn.className = 'set-btn' + (mode === 'consonants' ? ' s-cons' : '');
-  vBtn.className = 'set-btn' + (mode === 'vowels'     ? ' s-vow'  : '');
+  document.getElementById('set-btn-cons').className =
+    'set-btn' + (mode === 'consonants' ? ' active-set' : '');
+  document.getElementById('set-btn-vow').className =
+    'set-btn' + (mode === 'vowels' ? ' active-set' : '');
   showPracticeMain();
   updateCard();
 }
@@ -730,7 +756,7 @@ function updateCard() {
   const item  = items[practiceIndex];
   if (!item) return;
 
-  const color = CHAR_COLORS[practiceIndex % CHAR_COLORS.length];
+  const [bg, isNav] = BLOCKS[practiceIndex % BLOCKS.length];
   const total = items.length;
   const pct   = Math.round((practiceIndex / total) * 100);
 
@@ -738,17 +764,18 @@ function updateCard() {
   document.getElementById('progress-pct').textContent  = `${pct}%`;
   document.getElementById('progress-fill').style.width = `${pct}%`;
 
-  const cardChar = document.getElementById('card-char');
-  cardChar.textContent = item.char;
-  cardChar.style.color = color;
+  const fc = document.getElementById('flashcard');
+  fc.style.background = bg;
+  fc.className = 'flashcard' + (isNav ? ' inv' : '');
 
+  document.getElementById('card-char').textContent    = item.char;
   document.getElementById('card-emoji').textContent   = item.emoji;
   document.getElementById('card-name').textContent    = item.name;
   document.getElementById('card-example').textContent = item.example;
 
   const isLast = practiceIndex + 1 >= total;
   document.getElementById('next-btn').textContent =
-    isLast ? '🏆 เสร็จแล้ว!' : 'อ่านได้แล้ว ›';
+    isLast ? '🏆 เสร็จแล้ว!' : 'อ่านได้แล้ว →';
 
   clearTimeout(cardTimer);
   cardTimer = setTimeout(() => speak(getSpeakText(item)), 400);
@@ -772,9 +799,9 @@ function nextCard() {
     document.getElementById('progress-fill').style.width = '100%';
     document.getElementById('complete-msg').textContent  = `อ่านครบทั้ง ${items.length} ตัวแล้ว!`;
 
-    document.getElementById('flashcard').style.display       = 'none';
-    document.getElementById('practice-btns').style.display   = 'none';
-    document.getElementById('completion-screen').style.display = 'block';
+    document.getElementById('flashcard').style.display          = 'none';
+    document.getElementById('practice-btns').style.display      = 'none';
+    document.getElementById('completion-screen').style.display  = 'block';
 
     setTimeout(() => speak('เก่งมาก! หนูอ่านครบทุกตัวแล้ว'), 400);
     return;
@@ -803,31 +830,35 @@ function restart() {
 }
 
 // ===========================
-//         INIT
+//  INIT — Web Speech API only
+//  (ResponsiveVoice ถูกลบออก เพราะไม่ทำงานบน file:// + Safari)
 // ===========================
 renderGrid(CONSONANTS);
 
-// System voices
 if (window.speechSynthesis) {
-  if (window.speechSynthesis.getVoices().length > 0) loadVoices();
-  window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
-}
-
-// ResponsiveVoice — retry หลายรอบ (RV โหลดช้า)
-(function initRV() {
-  if (window.responsiveVoice) {
-    window.responsiveVoice.OnReady = loadVoices;
+  // โหลดถ้า voices พร้อมแล้ว
+  if (window.speechSynthesis.getVoices().length > 0) {
     loadVoices();
+  }
+  // รอ voiceschanged (Chrome/Firefox)
+  window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
+
+  // Safari โหลด voices ช้า — แก้ bug: เช็ค readyState ก่อน
+  function scheduleRetry(ms) {
+    setTimeout(() => {
+      if (window.speechSynthesis.getVoices().length > 0) loadVoices();
+    }, ms);
+  }
+
+  if (document.readyState === 'complete') {
+    // load event ผ่านไปแล้ว — schedule ตรงๆ
+    [200, 600, 1500].forEach(scheduleRetry);
   } else {
-    // ลองใหม่หลังหน้าโหลดเสร็จ: 300ms, 800ms, 2000ms
-    const delays = [300, 800, 2000];
-    delays.forEach(ms => {
-      window.addEventListener('load', () => setTimeout(() => {
-        if (window.responsiveVoice) loadVoices();
-      }, ms));
+    window.addEventListener('load', () => {
+      [200, 600, 1500].forEach(scheduleRetry);
     });
   }
-})();
+}
 </script>
 </body>
 </html>
